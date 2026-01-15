@@ -1,0 +1,5 @@
+# Environment variables
+*.cursor/*
+*.env
+*.secrets
+*.secrets/*

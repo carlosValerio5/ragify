@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+uvicorn = "==0.27.0"
+boto3 = "==1.34.0"
+python-multipart = "==0.0.6"
+pydantic-settings = "==2.1.0"
+fastapi = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.13"
