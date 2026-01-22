@@ -1,4 +1,3 @@
-from app import logging_config
 from fastapi import FastAPI
 import uvicorn
 import logging

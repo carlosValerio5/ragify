@@ -72,7 +72,7 @@ The application will prioritize Secrets Manager if `SECRET_NAME` is set, otherwi
 
 1. Start the server using pipenv:
 ```bash
-pipenv run python3 -m main.app
+pipenv run python3 -m app.main
 ```
 
    Or activate the virtual environment first:
