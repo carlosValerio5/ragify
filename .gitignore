@@ -3,3 +3,7 @@
 *.env
 *.secrets
 *.secrets/*
+terraform.tfstate
+*terraform.tfstate
+*.terraform
+.terraform
