@@ -1,38 +1,35 @@
-data "aws_iam_policy_document" "queue" {
- statement {
-	effect = "Allow"
+terraform {
+  required_version = ">= 1.5.0"
 
-	principals {
-		type = "*"
-		identifiers = ["*"]
-	}
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
 
-	actions = ["sqs:SendMessage"]
-	resources = ["arn:aws:sqs:*:*:s3-event-notification-queue"]
-
-	condition {
-		test = "ArnEquals"
-		variable = "aws:SourceArn"
-		values = [aws_s3_bucket.bucket.arn]
-	}
+  backend "local" {
+    path = "terraform.tfstate"
   }
 }
 
-resource "aws_sqs_queue" "queue" {
-	name = "s3-event-notification-queue"
-	policy = data.aws_iam_policy_document.queue.json
+provider "aws" {
+  region = var.aws_region
+
+  default_tags {
+    tags = {
+      Project     = var.project_name
+      Environment = var.environment
+      ManagedBy   = "terraform"
+    }
+  }
 }
 
-resource "aws_s3_bucket" "bucket" {
-	bucket = "pdf-amplify-system"
-}
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
 
-resource "aws_s3_bucket_notification" "bucket_notification" {
-	bucket = aws_s3_bucket.bucket.id
-	
-	queue {
-		queue_arn = aws_sqs_queue.queue.arn
-		events = ["s3:ObjectCreated:*"]
-		filter_suffix = ".pdf"
-	}
+locals {
+  account_id  = data.aws_caller_identity.current.account_id
+  region      = data.aws_region.current.name
+  name_prefix = "${var.project_name}-${var.environment}"
 }
