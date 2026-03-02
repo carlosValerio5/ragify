@@ -18,7 +18,10 @@ async def upload_pdf(file: UploadFile = File(...)):
         JSON response with s3_key and metadata
     """
     # Validate file extension
-    if not file.filename.lower().endswith('.pdf'):
+
+    valid_extensions = ('.pdf', '.txt', '.md')
+
+    if not file.filename.lower().endswith(valid_extensions):
         raise HTTPException(
             status_code=400,
             detail="File must be a PDF. Only .pdf files are accepted."
@@ -26,13 +29,14 @@ async def upload_pdf(file: UploadFile = File(...)):
     
     # Validate content type
     content_type = file.content_type
-    if content_type and content_type != 'application/pdf':
+    content_types = ('application/pdf', 'text/plain', 'text/markdown')
+    if content_type and content_type not in content_types:
         # Also check mimetype as fallback
         guessed_type, _ = mimetypes.guess_type(file.filename)
         if guessed_type != 'application/pdf':
             raise HTTPException(
                 status_code=400,
-                detail=f"Invalid content type: {content_type}. Expected application/pdf."
+                detail=f"Invalid content type: {content_type}. Expected {', '.join(content_types)} or mimetype of {guessed_type}."
             )
     
     try:
