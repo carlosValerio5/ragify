@@ -11,13 +11,7 @@ from contextlib import asynccontextmanager
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../..'))
 from config.config import settings
 from config.logging_config import setup_logging
-from .domain.ports import (
-    MessageQueuePort,
-    DocumentLoaderPort,
-    TextSplitterPort,
-    EmbeddingModelPort,
-    VectorDatabasePort
-)
+
 from .adapters.input.sqs_poller import SQSPollerAdapter
 from .adapters.input.background_poller import BackgroundPoller
 from .adapters.input.api_router import create_api_router
