@@ -7,3 +7,5 @@ terraform.tfstate
 *terraform.tfstate
 *.terraform
 .terraform
+token.txt
+*__pycache__*
